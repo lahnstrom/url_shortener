@@ -8,10 +8,10 @@ from .models import Link
 from .serializers import LinkSerializer
 
 class LinkRedirectView(View):
-    def get(self, request, shortened_url):
+    def get(self, request, short_url):
         link = None
         try:
-            link = Link.objects.get(shortened_url=shortened_url)
+            link = Link.objects.get(short_url=short_url)
         except Link.DoesNotExist:
             return HttpResponseBadRequest("URL does not exist")
         return HttpResponseRedirect(link.full_url)

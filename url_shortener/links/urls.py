@@ -9,5 +9,5 @@ router.register(r'links', LinkViewSet)
 app_name = "links"
 urlpatterns = [
     path('', include(router.urls)),
-    path("<str:shortened_url>/", view=link_redirect_view, name="redirect"),
+    # path("<str:short_url>", view=link_redirect_view, name="redirect"),
 ]
