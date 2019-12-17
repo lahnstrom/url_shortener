@@ -10,3 +10,4 @@ class LinkViewSet(viewsets.ModelViewSet):
     """
     queryset = Link.objects.all()
     serializer_class = LinkSerializer
+    lookup_field = 'uuid'

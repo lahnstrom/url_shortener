@@ -27,7 +27,7 @@ class Link(Model):
 
     # Should increment on every redirect
     redirect_count = IntegerField(_("Redirect Count"), editable=False, default=0)
-    
+
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     expires_at = DateTimeField(_('Expires At'), blank=True, null=True)
@@ -39,5 +39,5 @@ class Link(Model):
     def has_expired(self):
         if self.expires_at is None:
             return False
-        return self.expires_at > timezone.now()
+        return self.expires_at < timezone.now()
 
