@@ -1,7 +1,8 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from .views import LinkViewSet, link_redirect_view
+from .views import link_redirect_view
+from .viewsets import LinkViewSet
 
 router = routers.DefaultRouter()
 router.register(r'links', LinkViewSet)

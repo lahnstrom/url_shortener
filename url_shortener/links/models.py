@@ -1,7 +1,9 @@
 import random
 import string
+import uuid
 
-from django.db.models import CharField, Model
+from django.utils import timezone
+from django.db.models import CharField, Model, IntegerField, UUIDField, DateTimeField
 from django.utils.translation import ugettext_lazy as _
 
 url_default_length = 8
@@ -22,4 +24,20 @@ class Link(Model):
     full_url = CharField(_("Full url"), max_length=2000)
 
     short_url = CharField(_("Shortened url"), max_length=url_default_length, unique=True, default=generate_short_url)
+
+    # Should increment on every redirect
+    redirect_count = IntegerField(_("Redirect Count"), editable=False, default=0)
+    
+    uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
+
+    expires_at = DateTimeField(_('Expires At'), blank=True, null=True)
+
+    def increment_redirect_count(self):
+        self.redirect_count += 1
+        self.save()
+
+    def has_expired(self):
+        if self.expires_at is None:
+            return False
+        return self.expires_at > timezone.now()
 
