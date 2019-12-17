@@ -2,6 +2,7 @@ import random
 import string
 import uuid
 
+from django.urls import reverse
 from django.utils import timezone
 from django.db.models import CharField, Model, IntegerField, UUIDField, DateTimeField
 from django.utils.translation import ugettext_lazy as _
@@ -41,3 +42,5 @@ class Link(Model):
             return False
         return self.expires_at < timezone.now()
 
+    def get_absolute_url(self):
+        return f"links/{str(self.uuid)}"
