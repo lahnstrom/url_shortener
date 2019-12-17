@@ -11,6 +11,3 @@ class Link(Model):
     full_url = CharField(_("Full url"), max_length=2000)
 
     short_url = CharField(_("Shortened url"), max_length=10, unique=True)
-
-    def get_absolute_url(self):
-        return reverse("users:detail", kwargs={"username": self.username})

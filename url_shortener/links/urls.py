@@ -1,11 +1,13 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
-from url_shortener.links.views import (
-    link_redirect_view,
-)
+from .views import LinkViewSet, link_redirect_view
+
+router = routers.DefaultRouter()
+router.register(r'links', LinkViewSet)
 
 app_name = "links"
 urlpatterns = [
-   path("<str:shortened_url>/", view=link_redirect_view, name="redirect"),
-    # path("links/", view=link_view, name="link"),
+    path('', include(router.urls)),
+    path("<str:shortened_url>/", view=link_redirect_view, name="redirect"),
 ]
