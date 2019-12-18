@@ -44,3 +44,6 @@ class Link(Model):
 
     def get_absolute_url(self):
         return f"links/{str(self.uuid)}"
+
+    def __str__(self):
+        return f"{self.short_url} -> {self.full_url}" 
