@@ -1,16 +1,12 @@
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.views.generic import View
+from django.shortcuts import get_object_or_404
 
 from .models import Link
 
 class LinkRedirectView(View):
     def get(self, request, short_url):
-        link = None
-        
-        try:
-            link = Link.objects.get(short_url=short_url)
-        except Link.DoesNotExist:
-            return HttpResponseBadRequest("URL does not exist")
+        link = get_object_or_404(Link, short_url=short_url)
 
         if link.has_expired():
             return HttpResponseBadRequest("URL Has Expired")
