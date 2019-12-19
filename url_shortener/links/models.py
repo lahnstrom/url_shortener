@@ -7,6 +7,8 @@ from django.utils import timezone
 from django.db.models import CharField, Model, IntegerField, UUIDField, DateTimeField
 from django.utils.translation import ugettext_lazy as _
 
+from .utils import url_regex, short_url_regex
+
 url_default_length = 8
 
 
@@ -25,14 +27,14 @@ class Link(Model):
     # De facto url max-length is 2000:
     # https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
     full_url = CharField(_("Full url"), max_length=2000, validators=[RegexValidator(
-        regex=r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)',
+        regex=url_regex,
         message='Enter a valid url starting with http')])
 
     short_url = CharField(_("Shortened url"),
                           max_length=url_default_length,
                           unique=True,
                           default=generate_short_url,
-                          validators=[RegexValidator(regex=r'^[a-zA-Z\d_-]{4,8}$',
+                          validators=[RegexValidator(regex=short_url_regex,
                                                      message=(_("Enter 4-8 alphanumeric characters")))])
 
     # Should increment on every redirect
