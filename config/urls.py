@@ -11,7 +11,7 @@ urlpatterns = [
     #     "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     # ),
     # # User management
-    # path("users/", include("url_shortener.users.urls", namespace="users")),
+    path("users/", include("url_shortener.users.urls", namespace="users")),
     # # path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
 

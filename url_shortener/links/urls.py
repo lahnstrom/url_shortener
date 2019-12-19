@@ -12,4 +12,3 @@ urlpatterns = [
     path('', include(router.urls)),
     path("<str:short_url>", view=link_redirect_view, name="redirect"),
 ]
- 

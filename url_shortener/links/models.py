@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 url_default_length = 8
 
+
 def generate_short_url():
     random_string = ''.join(random.choices(
         string.ascii_uppercase +
@@ -18,19 +19,20 @@ def generate_short_url():
 
     return random_string
 
+
 class Link(Model):
 
     # De facto url max-length is 2000:
     # https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
     full_url = CharField(_("Full url"), max_length=2000, validators=[RegexValidator(
-        regex=r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)', 
-        message='Enter a valid url starting with http' )])
+        regex=r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)',
+        message='Enter a valid url starting with http')])
 
-    short_url = CharField(_("Shortened url"), 
+    short_url = CharField(_("Shortened url"),
                           max_length=url_default_length,
                           unique=True,
                           default=generate_short_url,
-                          validators=[RegexValidator(regex=r'^[a-zA-Z\d_-]{4,8}$', 
+                          validators=[RegexValidator(regex=r'^[a-zA-Z\d_-]{4,8}$',
                                                      message=(_("Enter 4-8 alphanumeric characters")))])
 
     # Should increment on every redirect
@@ -40,14 +42,15 @@ class Link(Model):
 
     expires_at = DateTimeField(_('Expires At'), blank=True, null=True)
 
-    def increment_redirect_count(self):
-        self.redirect_count += 1
-        self.save()
-
+    @property
     def has_expired(self):
         if self.expires_at is None:
             return False
         return self.expires_at < timezone.now()
+
+    def increment_redirect_count(self):
+        self.redirect_count += 1
+        self.save()
 
     def get_absolute_url(self):
         return f"links/{str(self.uuid)}"
