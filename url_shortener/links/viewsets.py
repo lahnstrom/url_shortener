@@ -12,6 +12,6 @@ class LinkViewSet(mixins.CreateModelMixin,
     """
     API endpoint that allows links to be listed, created and deleted.
     """
-    queryset = Link.objects.all()
+    queryset = Link.objects.order_by('-created_at').all()
     serializer_class = LinkSerializer
     lookup_field = 'uuid'

@@ -43,6 +43,8 @@ class Link(Model):
     uuid = UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     expires_at = DateTimeField(_('Expires At'), blank=True, null=True)
+    created_at = DateTimeField(_('Created At'), auto_now_add=True)
+    updated_at = DateTimeField(_('Updated At'), auto_now=True)
 
     @property
     def has_expired(self):
